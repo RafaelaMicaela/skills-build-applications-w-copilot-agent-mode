@@ -7,15 +7,16 @@ class Command(BaseCommand):
     help = 'Populate the database with test data'
 
     def handle(self, *args, **kwargs):
+        # Load test data from JSON file
+        with open('octofit_tracker/test_data.json', 'r') as file:
+            data = json.load(file)
+
         # Ensure unique email index for users
         User.objects.all().delete()  # Clear existing data for testing
         Team.objects.all().delete()
         Activity.objects.all().delete()
         Leaderboard.objects.all().delete()
         Workout.objects.all().delete()
-
-        with open('octofit_tracker/test_data.json', 'r') as file:
-            data = json.load(file)
 
         # Populate users
         for user_data in data['users']:
